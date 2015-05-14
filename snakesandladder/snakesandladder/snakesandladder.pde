@@ -2,9 +2,11 @@
 //Brendan Leder
 
 float boxSize;
-int total = 4;
+int total = 3;
 int[] x = new int[total];
 int[] y = new int[total];
+int move=0;
+int player=0;
 
 void setup() {
   size(750, 750);
@@ -14,6 +16,7 @@ void setup() {
   while (loop < total) {
     x[loop] = 0;
     y[loop] = 0;
+    loop += 1;
   }
 }
 
@@ -37,14 +40,15 @@ void draw() {
       up += 1;
     }
   }
-  for(int i = 0; i < total; i++) {
-   display(x[i], y[i], i); 
+  for (int m = 0; m < total; m++) {
+    display(x[m], y[m], m);
+    println(m+"|"+x[m]);
   }
 }
 
 
 void display(float tempx, float tempy, int which) {
-  translate(tempx + boxSize/2, tempy + boxSize/2); 
+  translate(tempx, tempy); 
   if (which%8==0) {
     fill(255, 255, 255);
   } else if (which%7==0) {
@@ -59,12 +63,19 @@ void display(float tempx, float tempy, int which) {
     fill(255, 0, 255);
   } else if (which%2==0) {
     fill(0, 0, 0);
-  } else if (which%1==0) {
+  } else {
     fill(0, 0, 255);
   }
 
   stroke(0);
-  ellipse(0, 0, 20, 20);
+  ellipse(boxSize/2, boxSize/2, boxSize/2, boxSize/2);
+}
+
+void movement() {
+  
+  
+  
+  
 }
 
 /*
