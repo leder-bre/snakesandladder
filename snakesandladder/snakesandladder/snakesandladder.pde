@@ -87,7 +87,7 @@ void draw() {
           canimove = true;
         }
         if (x[player] > boxSize * 9) {
-          nextx = boxSize; //**//
+          nextx = boxSize;
           x[player] = int(boxSize);
           y[player] += boxSize;
         }
@@ -168,6 +168,17 @@ void mouseReleased() {
     }
     nextx = x[player] + boxSize;
   }
+}
+
+void snake(int x, int y, int x2, int y2) {
+  float startleft = (x * boxSize) + boxSize/4;
+  float startup = (y * boxSize) + boxSize/2;
+  float endleft = (x2 * boxSize) + boxSize/4;
+  float endup = (y2 * boxSize) + boxSize/2;
+  
+  line(startleft, startup, endleft, endup);
+  line(startleft + boxSize/2, startup, endleft+boxSize/2, endup);
+  
 }
 
 /*
