@@ -59,6 +59,9 @@ void draw() {
       if (canimove == false) {
         int check = move;
         nextx = x[player] + boxSize;
+        if (nextx > boxSize * 9) {
+          nextx = boxSize;
+        }
         tomovex=x[player];
         tomovey=y[player];
         while (check > 0) {
@@ -71,22 +74,22 @@ void draw() {
         }
       }
       canimove = true;
-      
-      if(frameCount % 3 == 0) {
-      x[player] += 1;
+
+      if (frameCount % 3 == 0) {
+        x[player] += 1;
       }
 
       if (x[player] >= nextx) {
+        x[player] = int(nextx);
         nextx = x[player] + boxSize;
-        println(move);
         move-=1;
         if (move == 0) {
           canimove = true;
         }
         if (x[player] > boxSize * 9) {
+          nextx = boxSize; //**//
           x[player] = int(boxSize);
           y[player] += boxSize;
-          x[player] = int(boxSize);
         }
       }
     }
