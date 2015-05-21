@@ -17,6 +17,10 @@ float tomovey;
 float nextx;
 boolean canimove = false;
 PVector calc;
+int[] random1 = new int[7];
+int[] random2 = new int[7];
+int[] random3 = new int[7];
+int[] random4 = new int[7];
 
 void setup() {
   frameRate(30);
@@ -31,6 +35,14 @@ void setup() {
     x[loop] = 0;
     y[loop] = 0;
     loop += 1;
+  }
+  for (int u = 0; u < 7; u ++) {
+    for (int o = 0; o < 7; o++) {
+      random1[u] = int(random(0, 10));
+      random2[u] = int(random(0, 10));
+      random3[u] = int(random(0, 10));
+      random4[u] = int(random(0, 10));
+    }
   }
 }
 
@@ -89,8 +101,8 @@ void draw() {
           canimove = true;
         }
         if (x[player] > boxSize * 9) {
-          nextx = boxSize;
-          x[player] = int(boxSize);
+          nextx = 0;
+          x[player] = 0;
           y[player] += boxSize;
         }
       }
@@ -104,7 +116,20 @@ void draw() {
   stroke(0);
   ellipse(51 + (144 * player), height-39, 50, 50);
 
-  snake(1, 1, 3, 3);
+  int u = 0;
+  snake(random1[u], random2[u], random3[u], random4[u]);
+  u += 1;
+  snake(random1[u], random2[u], random3[u], random4[u]);
+  u += 1;
+  snake(random1[u], random2[u], random3[u], random4[u]);
+  u += 1;
+  snake(random1[u], random2[u], random3[u], random4[u]);
+  u += 1;
+  snake(random1[u], random2[u], random3[u], random4[u]);
+  u += 1;
+  snake(random1[u], random2[u], random3[u], random4[u]);
+  u += 1;
+  snake(random1[u], random2[u], random3[u], random4[u]);
 
   for (int m = 0; m < total; m++) {
     textSize(36);
@@ -163,7 +188,6 @@ void display(float tempx, float tempy, int which) {
   } else {
     fill(0, 0, 255, 100);
   }
-  println(move);
 
   stroke(0);
   ellipse(boxSize/2, boxSize/2, boxSize/2, boxSize/2);
@@ -200,26 +224,25 @@ void mouseReleased() {
   }
 }
 
-void snake(int x, int y, int x2, int y2) {
-  float startleft = (x * boxSize);
-  float startup = (y * boxSize) + boxSize/2;
-  float endleft = (x2 * boxSize);
+void snake(int x1, int y1, int x2, int y2) {
+  float startleft = (x1 * boxSize)+boxSize/2;
+  float startup = (y1 * boxSize) + boxSize/2;
+  float endleft = (x2 * boxSize)+boxSize/2;
   float endup = (y2 * boxSize) + boxSize/2;
 
   stroke(0);
   strokeWeight(2);
-
-  pushMatrix();
-  float size = dist(startleft, startup, endleft, endup)/2;
-  translate((startleft + endleft)/2, (startup + endup)/2 + boxSize/2);
-  rotate(atan2(x-x2, y-y2)+ 1.56);
-  line(0, -size, 0, size);
-  line(boxSize, -size, boxSize, size);
-  for (int i = 0; i < int (size * 2) - 10; i += 10) {
-    line(0, -size + i, boxSize, -size + i);
+  line(startleft, startup, endleft, endup);
+  triangle(endleft, endup-10, endleft-8, endup+5, endleft+8, endup+5);
+  strokeWeight(1);
+  for (int l = 0; l < total; l++) {
+    if (move == 0) {
+      if (x[l] > startleft - boxSize/1.5 && x[l] < startleft + boxSize/1.5 && y[l] > startup - boxSize/1.5 && y[l] < startup+ boxSize/1.5) {
+        x[l] = int(endleft-(boxSize/2));
+        y[l] = int(endup-(boxSize/2));
+      }
+    }
   }
-
-  popMatrix();
 }
 
 /*
