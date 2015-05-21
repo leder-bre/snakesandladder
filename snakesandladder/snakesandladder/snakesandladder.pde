@@ -2,7 +2,7 @@
 //Brendan Leder
 
 float boxSize;
-int total = 6;
+int total = 5;
 int[] x = new int[int(total)];
 int[] y = new int[int(total)];
 float[] xshift = new float[total];
@@ -16,11 +16,13 @@ float tomovex;
 float tomovey;
 float nextx;
 boolean canimove = false;
+PVector calc;
 
 void setup() {
   frameRate(30);
   size(750, 750);
   w = width;
+  calc = new PVector(0, 0);
   boxSize = (w/10)-7;
   int loop = 0;
   while (loop < total) {
@@ -98,8 +100,11 @@ void draw() {
   roller();
 
   fill(0, 0);
+  colorpicker();
   stroke(0);
   ellipse(51 + (144 * player), height-39, 50, 50);
+
+  snake(1, 1, 3, 3);
 
   for (int m = 0; m < total; m++) {
     textSize(36);
@@ -113,7 +118,32 @@ void draw() {
   }
 }
 
-
+void colorpicker() {
+  int which = player + 1;
+  if (which > total) {
+    which = 0;
+  }
+  if (which < 0) {
+    which = total;
+  }
+  if (which%8==0) {
+    fill(255, 255, 255, 100);
+  } else if (which%7==0) {
+    fill(255, 255, 0, 100);
+  } else if (which%6==0) {
+    fill(255, 0, 0, 100);
+  } else if (which%5==0) {
+    fill(255, 255, 255, 100);
+  } else if (which%4==0) {
+    fill(0, 255, 0, 100);
+  } else if (which%3==0) {
+    fill(255, 0, 255, 100);
+  } else if (which%2==0) {
+    fill(0, 0, 0, 100);
+  } else {
+    fill(0, 0, 255, 100);
+  }
+}
 void display(float tempx, float tempy, int which) {
   translate(tempx, tempy); 
   if (which%8==0) {
@@ -171,14 +201,25 @@ void mouseReleased() {
 }
 
 void snake(int x, int y, int x2, int y2) {
-  float startleft = (x * boxSize) + boxSize/4;
+  float startleft = (x * boxSize);
   float startup = (y * boxSize) + boxSize/2;
-  float endleft = (x2 * boxSize) + boxSize/4;
+  float endleft = (x2 * boxSize);
   float endup = (y2 * boxSize) + boxSize/2;
-  
-  line(startleft, startup, endleft, endup);
-  line(startleft + boxSize/2, startup, endleft+boxSize/2, endup);
-  
+
+  stroke(0);
+  strokeWeight(2);
+
+  pushMatrix();
+  float size = dist(startleft, startup, endleft, endup)/2;
+  translate((startleft + endleft)/2, (startup + endup)/2 + boxSize/2);
+  rotate(atan2(x-x2, y-y2)+ 1.56);
+  line(0, -size, 0, size);
+  line(boxSize, -size, boxSize, size);
+  for (int i = 0; i < int (size * 2) - 10; i += 10) {
+    line(0, -size + i, boxSize, -size + i);
+  }
+
+  popMatrix();
 }
 
 /*
