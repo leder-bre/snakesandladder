@@ -2,7 +2,7 @@
 //Brendan Leder
 
 float boxSize;
-int total = 4;
+int total = 6;
 int[] x = new int[int(total)];
 int[] y = new int[int(total)];
 float[] xshift = new float[total];
@@ -12,6 +12,10 @@ int player=0;
 float w;
 int rollnum = int(random(1, 7));
 boolean canmove;
+float tomovex;
+float tomovey;
+float nextx;
+boolean canimove = false;
 
 void setup() {
   frameRate(30);
@@ -50,12 +54,40 @@ void draw() {
       counter = 0;
       up += 1;
     }
+
     if (move > 0) {
-      move-=1;
-      x[player] += boxSize;
-      if (x[player] > boxSize * 9) {
-        x[player] = int(boxSize);
-        y[player] += boxSize;
+      if (canimove == false) {
+        int check = move;
+        nextx = x[player] + boxSize;
+        tomovex=x[player];
+        tomovey=y[player];
+        while (check > 0) {
+          tomovex += boxSize;
+          if (tomovex > boxSize*9) {
+            tomovex = boxSize;
+            tomovey += boxSize;
+          }
+          check -= 1;
+        }
+      }
+      canimove = true;
+      
+      if(frameCount % 3 == 0) {
+      x[player] += 1;
+      }
+
+      if (x[player] >= nextx) {
+        nextx = x[player] + boxSize;
+        println(move);
+        move-=1;
+        if (move == 0) {
+          canimove = true;
+        }
+        if (x[player] > boxSize * 9) {
+          x[player] = int(boxSize);
+          y[player] += boxSize;
+          x[player] = int(boxSize);
+        }
       }
     }
   }
@@ -98,6 +130,7 @@ void display(float tempx, float tempy, int which) {
   } else {
     fill(0, 0, 255, 100);
   }
+  println(move);
 
   stroke(0);
   ellipse(boxSize/2, boxSize/2, boxSize/2, boxSize/2);
@@ -114,9 +147,11 @@ void roller() {
   text(rollnum, width-20, height/2+10);
   textSize(16);
   textAlign(LEFT);
-  if (mousePressed && mouseX > width-50&&mouseX<width-10&&mouseY>height/2-20&&mouseY<height/2 + 20) {
-    rollnum = int(random(1, 7)); 
-    canmove = true;
+  if (move <= 0) {
+    if (mousePressed && mouseX > width-50&&mouseX<width-10&&mouseY>height/2-20&&mouseY<height/2 + 20) {
+      rollnum = int(random(1, 7)); 
+      canmove = true;
+    }
   }
 }
 
@@ -128,6 +163,7 @@ void mouseReleased() {
     if (player == total) {
       player = 0;
     }
+    nextx = x[player] + boxSize;
   }
 }
 
