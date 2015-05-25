@@ -2,7 +2,7 @@
 //Brendan Leder
 
 float boxSize;
-int total = 5;
+int total = 1;
 int[] x = new int[int(total)];
 int[] y = new int[int(total)];
 float[] xshift = new float[total];
@@ -101,7 +101,7 @@ void draw() {
           canimove = true;
         }
         if (x[player] > boxSize * 9) {
-          nextx = 0;
+          nextx = boxSize;
           x[player] = 0;
           y[player] += boxSize;
         }
@@ -215,7 +215,8 @@ void roller() {
 void mouseReleased() {
   if (canmove == true) {
     canmove = false; 
-    move = rollnum;
+    //move = rollnum;
+    move = 2;
     player++;
     if (player == total) {
       player = 0;
@@ -225,19 +226,40 @@ void mouseReleased() {
 }
 
 void snake(int x1, int y1, int x2, int y2) {
+  
+  while(x1 == 10 && y1 == 10) {
+   x1 = int(random(1, 11)); 
+   y1 = int(random(1, 11)); 
+  }
+  
+   while(x2 == 10 && y2 == 10) {
+   x2 = int(random(1, 11)); 
+   y2 = int(random(1, 11)); 
+  }
+  
   float startleft = (x1 * boxSize)+boxSize/2;
   float startup = (y1 * boxSize) + boxSize/2;
   float endleft = (x2 * boxSize)+boxSize/2;
   float endup = (y2 * boxSize) + boxSize/2;
 
-  stroke(0);
-  strokeWeight(2);
+  strokeWeight(5);
+  if(y2 > y1) {
+    stroke(0, 0, 0);
+  } else if (y1 > y2) {
+    stroke(0, 255, 0);
+  } else if (x1 > x2) {
+   stroke(0, 255, 0); 
+  } else if (x2 > x1) {
+    stroke(0, 0, 0);
+  } else {
+   noStroke(); 
+  }
   line(startleft, startup, endleft, endup);
   triangle(endleft, endup-10, endleft-8, endup+5, endleft+8, endup+5);
   strokeWeight(1);
   for (int l = 0; l < total; l++) {
     if (move == 0) {
-      if (x[l] > startleft - boxSize/1.5 && x[l] < startleft + boxSize/1.5 && y[l] > startup - boxSize/1.5 && y[l] < startup+ boxSize/1.5) {
+      if (x[l] > startleft - boxSize/1.5 && x[l] < startleft + boxSize/6 && y[l] > startup - boxSize/1.5 && y[l] < startup+ boxSize/3) {
         x[l] = int(endleft-(boxSize/2));
         y[l] = int(endup-(boxSize/2));
       }
