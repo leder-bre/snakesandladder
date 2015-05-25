@@ -215,8 +215,7 @@ void roller() {
 void mouseReleased() {
   if (canmove == true) {
     canmove = false; 
-    //move = rollnum;
-    move = 2;
+    move = rollnum;
     player++;
     if (player == total) {
       player = 0;
